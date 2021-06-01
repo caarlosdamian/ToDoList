@@ -1,5 +1,6 @@
 import "./App.css";
 import { useState, useRef } from "react";
+import { FcCheckmark,FcCancel } from "react-icons/fc";
 
 function App() {
   const [todoList, settodoList] = useState([]);
@@ -32,12 +33,12 @@ function App() {
 
   return (
     <div className="App">
-      <h1>To Do List</h1>
+      <h1>Shopping List</h1>
       <div>
         <input
           ref={inputTask}
           type="text"
-          placeholder="Task..."
+          placeholder="Item..."
           onKeyDown={(event) => {
             if (event.keyCode === 13) addTask();
           }}
@@ -45,7 +46,7 @@ function App() {
             setcurrentTask(event.target.value);
           }}
         />
-        <button onClick={addTask}>Add Task</button>
+        <button onClick={addTask}>Add Item</button>
       </div>
       <hr></hr>
       <ul>
@@ -53,12 +54,12 @@ function App() {
           return (
             <div className="task">
               <li key={key}>{val.task}</li>
-              <button onClick={() => completeTask(val.task)}>Completed</button>
-              <button onClick={() => deleteTask(val.task)}>X</button>
+              <FcCheckmark onClick={() => completeTask(val.task)}/>
+              <FcCancel onClick={() => deleteTask(val.task)}/>
               {val.completed ? (
-                <h1>Task Completed</h1>
+                <p>Completed</p>
               ) : (
-                <h1>task not completed</h1>
+                <p>Pending</p>
               )}
             </div>
           );
