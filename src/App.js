@@ -44,7 +44,7 @@ function App() {
       <h1 className="title is-1">Shopping List</h1>
       <div>
         <Container className="align-items-center">
-          <Form>
+          <Form >
             <Row className="justify-content-md-center">
               <Col xs="auto" className="my-1">
                 <Form.Control
@@ -52,7 +52,9 @@ function App() {
                   type="text"
                   placeholder="Item..."
                   onKeyDown={(event) => {
-                    if (event.keyCode === 13) addTask();
+                    if (event.keyCode === 13){ 
+                      event.preventDefault();
+                      addTask()};
                   }}
                   onChange={(event) => {
                     setcurrentTask(event.target.value);
