@@ -1,19 +1,22 @@
 .App {
   text-align: center;
 }
-input {
+.prueba {
   margin: 10px;
   width: 300px;
   height: 30px;
   font-size: 18px;
+  margin: 10px;
   padding-left: 10px;
+  background-color: aqua;
 }
 button {
-  width: 300px;
-  height: 40px;
+  width: 100px;
+  height: 35px;
   border: none;
   background-color: coral;
   border-radius: 5px;
+  margin: 10px;
   color: aliceblue;
 }
 button:hover{
@@ -41,4 +44,10 @@ li {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+.hide{
+  display: none;
+}
+.icons{
+  margin: 2px;
 }

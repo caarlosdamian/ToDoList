@@ -1,12 +1,21 @@
 import "./App.css";
 import { useState, useRef } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Table from "react-bootstrap/Table";
+import { FcCheckmark, FcCancel } from "react-icons/fc";
 
 function App() {
   const [todoList, settodoList] = useState([]);
   const [currentTask, setcurrentTask] = useState("");
+  const [hide_table, setHideTable] = useState(false);
   const inputTask = useRef(null);
 
   const addTask = () => {
+    setHideTable(true)
     settodoList([...todoList, { task: currentTask, completed: false }]);
     inputTask.current.value = "";
     setcurrentTask("");
@@ -32,38 +41,64 @@ function App() {
 
   return (
     <div className="App">
-      <h1>To Do List</h1>
+      <h1 className="title is-1">Shopping List</h1>
       <div>
-        <input
-          ref={inputTask}
-          type="text"
-          placeholder="Task..."
-          onKeyDown={(event) => {
-            if (event.keyCode === 13) addTask();
-          }}
-          onChange={(event) => {
-            setcurrentTask(event.target.value);
-          }}
-        />
-        <button onClick={addTask}>Add Task</button>
+        <Container className="align-items-center">
+          <Form>
+            <Row className="justify-content-md-center">
+              <Col xs="auto" className="my-1">
+                <Form.Control
+                  ref={inputTask}
+                  type="text"
+                  placeholder="Item..."
+                  onKeyDown={(event) => {
+                    if (event.keyCode === 13) addTask();
+                  }}
+                  onChange={(event) => {
+                    setcurrentTask(event.target.value);
+                  }}
+                ></Form.Control>
+              </Col>
+              <Col xs="auto" className="my-1">
+                <Button
+                  className="my-1"
+                  variant="outline-info"
+                  onClick={addTask}
+                >
+                  Add Item
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </Container>
       </div>
       <hr></hr>
-      <ul>
-        {todoList.map((val, key) => {
-          return (
-            <div className="task">
-              <li key={key}>{val.task}</li>
-              <button onClick={() => completeTask(val.task)}>Completed</button>
-              <button onClick={() => deleteTask(val.task)}>X</button>
-              {val.completed ? (
-                <h1>Task Completed</h1>
-              ) : (
-                <h1>task not completed</h1>
-              )}
-            </div>
-          );
-        })}
-      </ul>
+      <Row className="justify-content-md-center">
+        <Table responsive="sm"  bordered hover  className={hide_table ? "" : "hide"}>
+          <tbody>
+            <tr>
+              <th>Item </th>
+              <th>Actions</th>
+              <th>Status</th>
+            </tr>
+            {todoList.map((val, key) => {
+              return (
+                <tr key={key}>
+                  <td>{val.task}</td>
+                  <td>
+                    <div className="icons">
+                      <FcCheckmark onClick={() => completeTask(val.task)} />
+                   
+                      <FcCancel onClick={() => deleteTask(val.task)} />
+                      </div>
+                  </td>
+                  <td>{val.completed ? <p>Completed</p> : <p>Pending</p>}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </Row>
     </div>
   );
 }
