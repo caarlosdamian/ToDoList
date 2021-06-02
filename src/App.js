@@ -48,6 +48,7 @@ function App() {
             <Row className="justify-content-md-center">
               <Col xs="auto" className="my-1">
                 <Form.Control
+                  required
                   ref={inputTask}
                   type="text"
                   placeholder="Item..."
