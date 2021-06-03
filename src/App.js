@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -9,16 +9,28 @@ import Table from "react-bootstrap/Table";
 import { FcCheckmark, FcCancel } from "react-icons/fc";
 
 function App() {
-  const [todoList, settodoList] = useState([]);
+  const [todoList, settodoList] = useState(
+    JSON.parse(localStorage.getItem("key")) || []
+  );
   const [currentTask, setcurrentTask] = useState("");
   const [hide_table, setHideTable] = useState(false);
   const inputTask = useRef(null);
 
+  useEffect(() => {
+    localStorage.setItem("key", JSON.stringify(todoList));
+  }, [todoList]);
+
   const addTask = () => {
-    setHideTable(true)
+    setHideTable(true);
+
     settodoList([...todoList, { task: currentTask, completed: false }]);
+    localStorage.setItem(
+      "key",
+      JSON.stringify([...todoList, { task: currentTask, completed: false }])
+    );
     inputTask.current.value = "";
     setcurrentTask("");
+    setHideTable(false);
   };
 
   const deleteTask = (taskToDelete) => {
@@ -44,7 +56,7 @@ function App() {
       <h1 className="title is-1">Shopping List</h1>
       <div>
         <Container className="align-items-center">
-          <Form >
+          <Form>
             <Row className="justify-content-md-center">
               <Col xs="auto" className="my-1">
                 <Form.Control
@@ -53,9 +65,10 @@ function App() {
                   type="text"
                   placeholder="Item..."
                   onKeyDown={(event) => {
-                    if (event.keyCode === 13){ 
+                    if (event.keyCode === 13) {
                       event.preventDefault();
-                      addTask()};
+                      addTask();
+                    }
                   }}
                   onChange={(event) => {
                     setcurrentTask(event.target.value);
@@ -77,7 +90,12 @@ function App() {
       </div>
       <hr></hr>
       <Row className="justify-content-md-center">
-        <Table responsive="sm"  bordered hover  className={hide_table ? "" : "hide"}>
+        <Table
+          responsive="sm"
+          bordered
+          hover
+          className={hide_table ? "hide" : ""}
+        >
           <tbody>
             <tr>
               <th>Item </th>
@@ -91,9 +109,9 @@ function App() {
                   <td>
                     <div className="icons">
                       <FcCheckmark onClick={() => completeTask(val.task)} />
-                   
+
                       <FcCancel onClick={() => deleteTask(val.task)} />
-                      </div>
+                    </div>
                   </td>
                   <td>{val.completed ? <p>Completed</p> : <p>Pending</p>}</td>
                 </tr>
