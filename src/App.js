@@ -7,30 +7,36 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import { FcCheckmark, FcCancel } from "react-icons/fc";
+import swal from "sweetalert";
 
 function App() {
   const [todoList, settodoList] = useState(
     JSON.parse(localStorage.getItem("key")) || []
   );
   const [currentTask, setcurrentTask] = useState("");
-  const [hide_table, setHideTable] = useState(false);
+  const [hide_table, setHideTable] = useState(true);
   const inputTask = useRef(null);
 
   useEffect(() => {
     localStorage.setItem("key", JSON.stringify(todoList));
+    setHideTable(false);
   }, [todoList]);
 
   const addTask = () => {
-    setHideTable(true);
-
-    settodoList([...todoList, { task: currentTask, completed: false }]);
-    localStorage.setItem(
-      "key",
-      JSON.stringify([...todoList, { task: currentTask, completed: false }])
-    );
-    inputTask.current.value = "";
-    setcurrentTask("");
-    setHideTable(false);
+    if (currentTask === "") {
+      swal("Item can’t be empty", {
+        icon: "warning",
+      });
+    } else {
+      settodoList([...todoList, { task: currentTask, completed: false }]);
+      localStorage.setItem(
+        "key",
+        JSON.stringify([...todoList, { task: currentTask, completed: false }])
+      );
+      inputTask.current.value = "";
+      setcurrentTask("");
+      setHideTable(false);
+    }
   };
 
   const deleteTask = (taskToDelete) => {
@@ -39,6 +45,9 @@ function App() {
         return val.task !== taskToDelete;
       })
     );
+    if (todoList === []) {
+      setHideTable(false);
+    }
   };
 
   const completeTask = (taskToComplete) => {
@@ -97,11 +106,6 @@ function App() {
           className={hide_table ? "hide" : ""}
         >
           <tbody>
-            <tr>
-              <th>Item </th>
-              <th>Actions</th>
-              <th>Status</th>
-            </tr>
             {todoList.map((val, key) => {
               return (
                 <tr key={key}>
