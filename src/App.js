@@ -6,8 +6,9 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
-import { FcCheckmark, FcCancel } from "react-icons/fc";
 import swal from "sweetalert";
+import Check from "./assets/check.png";
+import Delete from "./assets/delete.png";
 
 function App() {
   const [todoList, settodoList] = useState(
@@ -112,9 +113,16 @@ function App() {
                   <td>{val.task}</td>
                   <td>
                     <div className="icons">
-                      <FcCheckmark onClick={() => completeTask(val.task)} />
-
-                      <FcCancel onClick={() => deleteTask(val.task)} />
+                      <img
+                      alt="check"
+                        src={Check}
+                        onClick={() => completeTask(val.task)}
+                      ></img>
+                      <img
+                        alt="delete"
+                        src={Delete}
+                        onClick={() => deleteTask(val.task)}
+                      ></img>
                     </div>
                   </td>
                   <td>{val.completed ? <p>Completed</p> : <p>Pending</p>}</td>

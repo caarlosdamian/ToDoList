@@ -48,6 +48,6 @@ li {
 .hide{
   display: none;
 }
-.icons{
-  margin: 2px;
+img{
+  width: 30px;
 }
